@@ -1,5 +1,6 @@
 import React from 'react'
 import Logo from '../images/healthLogo.png'
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';  
 
 const Home = () => {
   return (
@@ -14,7 +15,9 @@ const Home = () => {
             agent within a click of a button. Learn more by watching the video or simply getting started to start your own virtual
             human journey!
         </p>
-        <button className='bg-[#487FC6] text-[#FFFFFF] w-[200px] rounded-md font-medium my-6 mx-auto md:mx8 py-3'>Get Started</button>
+        <button className='bg-[#487FC6] text-[#FFFFFF] w-[200px] rounded-md font-medium my-6 mx-auto md:mx8 py-3'>
+          <Link to='/Patients'>Get Started</Link>
+          </button>
       </div>
     </div>
   </div>
