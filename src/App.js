@@ -6,6 +6,7 @@ import Patients from './components/Patients'
 import Chat from './components/Chat'
 import About from './components/About'
 import Voice from "./components/Voice";
+import Prompt from "./components/Prompt";
 import {Switch, Route, Routes, useLocation} from 'react-router-dom';
 
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/Chat" Component={Chat}/>
         <Route path="/About" Component={About} />
         <Route path="/Voice" Component={Voice} />
+        <Route path="/Prompt" Component={Prompt} />
       </Routes>
     </div>
   );
