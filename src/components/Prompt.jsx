@@ -27,14 +27,6 @@ const Prompt = () => {
   return (
     <div className='ml-[280px] mt-20 flex-col'>
       <h1 className='text-3xl font-bold text-[#12266C] mb-4'>Patient Details</h1>
-      {/* add john smith image */}
-      <div className='flex justify-center items-center'>
-        <div className='bg-[#487FC6] w-96 h-96 rounded-lg flex items-center justify-center relative'>
-          <p className='text-white text-lg font-bold'>
-            <Link to='/patients/Voice'>John Smith</Link>
-          </p>
-        </div>
-      </div>
 
       {/* description box for chatgpt */}
       <div className='mt-4 ml-5 flex-1'>
@@ -72,6 +64,12 @@ const Prompt = () => {
               </button>
             </>
           )}
+          <div className= 'ml-[350px] mt-4 ml-5 flex-1'>
+            <button className=' bg-[#487FC6] text-white p-4 rounded-lg mt-4'>
+              <Link to='/Chat'>Submit</Link>
+            </button>
+
+          </div>
         </div>
       </div>
     </div>
