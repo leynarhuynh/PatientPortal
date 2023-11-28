@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Logo from '../images/patientportal.png'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
