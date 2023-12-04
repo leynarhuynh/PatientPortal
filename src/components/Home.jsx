@@ -5,7 +5,7 @@ import Video from '../images/vergDemo.mov';
 
 const Home = () => {
   return (
-    <div className='w-full bg-#FFFFF py-24 px-4'>
+    <div className='w-full bg-white py-24 px-4'>
       <div className='max-w-[1240px] mx-auto grid md:grid-cols-2'>
         <video className='w-[700] mx-auto my-20 border-20 border-[#487FC6]' controls>
           <source src={Video} type='video/mp4' /> 
