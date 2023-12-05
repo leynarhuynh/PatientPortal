@@ -7,9 +7,9 @@ const Home = () => {
   return (
     <div className='w-full bg-white py-24 px-4'>
       <div className='max-w-[1240px] mx-auto grid md:grid-cols-2'>
-        <video className='w-[700] mx-auto my-20 border-20 border-[#487FC6]' controls>
+        {/* <video className='w-[700] mx-auto my-20 border-20 border-[#487FC6]' controls>
           <source src={Video} type='video/mp4' /> 
-        </video>
+        </video> */}
         <div className='flex flex-col justify-center ml-12'>
           <p className='text-[#487FC6] text-center font-bold'>Virtual Experience Research Group</p>
           <h1 className='text-[#12266C] text-center md:text-4xl sm:text-3xl text-2xl font-bold py-2'>
