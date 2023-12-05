@@ -36,10 +36,10 @@ const Voice = () => {
             <Link to='/Prompt'>Voice 1</Link>
           </button>
           <button className='bg-[#487FC6] text-white p-10 rounded-lg'>
-            <Link to='/Prompt'>Voice 2</Link>
+            <Link to='/Chat'>Voice 2</Link>
           </button>
           <button className='bg-[#487FC6] text-white p-10 rounded-lg'>
-            <Link to='/Prompt'>Voice 3</Link>
+            <Link to='/Chat'>Voice 3</Link>
           </button>
         </div>
       </div>
