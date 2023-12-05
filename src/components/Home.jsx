@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import Logo from '../images/healthLogo.png';
-import Video from '../images/vergDemo.mov'; 
+// import Video from '../images/vergDemo.mov'; 
 
 const Home = () => {
   return (
