@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Logo from '../images/lauraPatient.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import LauraDetails from './LauraDetails'; // Import NewPatient component
+import LauraDetails from './LauraDetails'; 
+
 
 const ChatMessage = ({ message, type }) => {
   return (
@@ -44,43 +45,49 @@ export default function Home() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setChatLog((prevChatLog) => [...prevChatLog, { type: 'user', message: inputValue }]);
+    // Now directly use formData.patientDetails in sendMessage
     sendMessage(inputValue);
     setInputValue('');
   };
+  
+  
 
   const sendMessage = (message) => {
-  
     const url = 'http://localhost:5000/api/chat';
     const data = {
-        messages: [
-            {
-                role: "user",
-                content: message
-            }
-        ]
+      messages: [
+        {
+          role: "user",
+          content: message
+        }
+      ],
+      patientDetails: formData.patientDetails
     };
   
     setIsLoading(true);
+    console.log('DATA SENT TO SERVER', data);
   
     axios.post(url, data)
-        .then((response) => {
-            // Assuming the response structure is the same as the OpenAI documentation
-            const choice = response.data.choices[0];
-            setChatLog(prevChatLog => [...prevChatLog, { type: 'assistant', message: choice.message.content }]);
-            setIsLoading(false);
-        })
-        .catch((error) => {
-            console.error(error);
-            setIsLoading(false);
-            // Show error message to the user
-        });
+      .then((response) => {
+        // Assuming the response structure is the same as the OpenAI documentation
+        const choice = response.data.choices[0];
+        setChatLog(prevChatLog => [...prevChatLog, { type: 'assistant', message: choice.message.content }]);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsLoading(false);
+        // Show error message to the user
+      });
   };
   
 
-  const handlePatientSubmit = (data) => {
-    console.log("Patient Form Data: ", data);
-    navigate('/Chat'); // Navigate to chat page after form submission
+  const handlePatientSubmit = (serializedData) => {
+    setFormData({ ...formData, patientDetails: serializedData }); // Set patientDetails in formData
+    navigate('/Chat', { state: { patientDetails: serializedData } });
   };
+  
+
   
 
   return (
@@ -90,14 +97,14 @@ export default function Home() {
       </div>
       <div className="w-1/4 bg-white h-2/3"> {/* Adjusted margin-right */}
         <ChatInterface 
-          chatLog={chatLog}
-          onMessageSubmit={handleSubmit}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
+        chatLog={chatLog}
+        onMessageSubmit={(event) => handleSubmit(event, formData.patientDetails)}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
         />
       </div>
-      <div className="w-1/5 h-2/3 ml-10 overflow-y-auto"> {/* Adjusted margin-left, added overflow style */}
-        <LauraDetails onPatientSubmit={handlePatientSubmit} />
+      <div className="w-1/5 h-2/3 ml-10 overflow-y-auto"> 
+      <LauraDetails onPatientSubmit={handlePatientSubmit} />
       </div>
     </div>
   );
