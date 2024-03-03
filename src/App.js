@@ -7,6 +7,8 @@ import Chat from './components/Chat'
 import About from './components/About'
 import Voice from "./components/Voice";
 import Prompt from "./components/Prompt";
+import NewPatient from "./components/NewPatient";
+import LauraDetails from "./components/LauraDetails";
 import {Switch, Route, Routes, useLocation} from 'react-router-dom';
 
 
@@ -25,6 +27,8 @@ function App() {
         <Route path="/About" Component={About} />
         <Route path="/Voice" Component={Voice} />
         <Route path="/Prompt" Component={Prompt} />
+        <Route path="/NewPatient" Component={NewPatient} />
+        <Route path="/LauraDetails" Component={LauraDetails} />
       </Routes>
     </div>
   );
