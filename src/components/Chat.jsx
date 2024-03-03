@@ -1,112 +1,105 @@
 import React, { useState } from 'react';
-import Logo from '../images/johnsmith.png'; 
+import Logo from '../images/lauraPatient.png';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import LauraDetails from './LauraDetails'; // Import NewPatient component
+
+const ChatMessage = ({ message, type }) => {
+  return (
+    <div className={`p-3 rounded-lg m-2 ${type === 'user' ? 'bg-[#D6E4FD]' : 'bg-[#EFF0F3]'} ${type === 'user' ? 'self-end' : 'self-start'}`}>
+      <p className="text-black">{message}</p>
+    </div>
+  );
+};
+
+const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue }) => {
+  return (
+    <div className="flex flex-col justify-between h-full">
+      <div className="overflow-y-auto p-4 space-y-2">
+        {chatLog.map((message, index) => (
+          <ChatMessage key={index} message={message.message} type={message.type} />
+        ))}
+      </div>
+      <form onSubmit={onMessageSubmit} className="border-t-2 border-gray-200 p-4 flex">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="flex-grow p-2 mr-4 rounded border"
+          placeholder="Type a message..."
+        />
+        <button type="submit" className="bg-[#353D53] text-white rounded px-4 py-2">Send</button>
+      </form>
+    </div>
+  );
+};
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
   const [chatLog, setChatLog] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({});
+  const navigate = useNavigate(); // Import useNavigate hook
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setChatLog((prevChatLog) => [...prevChatLog, { type: 'user', message: inputValue }]);
     sendMessage(inputValue);
     setInputValue('');
-  }
+  };
 
   const sendMessage = (message) => {
-    // Check for specific messages and respond immediately
-    if (message.toLowerCase() === 'what is your name?') {
-      setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: 'John Smith' }]);
-      return;
-    } else if (message.toLowerCase() === 'how old are you?') {
-      setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: '45' }]);
-      return;
-    }
-    else if (message.toLowerCase() === 'what pains are you feeling?') {
-      setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: 'burning and sharp pains in my chest' }]);
-      return;
-    }
   
-    // For other messages, continue with the existing logic
-    const url = '/api/chat';
+    const url = 'http://localhost:5000/api/chat';
     const data = {
-      model: "gpt-3.5-turbo-0301",
-      messages: [{ "role": "user", "content": message }]
+        messages: [
+            {
+                role: "user",
+                content: message
+            }
+        ]
     };
   
     setIsLoading(true);
   
-    axios.post(url, data).then((response) => {
-      console.log(response);
-      setChatLog(prevChatLog => [...prevChatLog, { type: 'bot', message: response.data.choices[0].message.content }]);
-      setIsLoading(false);
-    }).catch((error) => {
-      setIsLoading(false);
-      console.log(error);
-    })
-  }
+    axios.post(url, data)
+        .then((response) => {
+            // Assuming the response structure is the same as the OpenAI documentation
+            const choice = response.data.choices[0];
+            setChatLog(prevChatLog => [...prevChatLog, { type: 'assistant', message: choice.message.content }]);
+            setIsLoading(false);
+        })
+        .catch((error) => {
+            console.error(error);
+            setIsLoading(false);
+            // Show error message to the user
+        });
+  };
+  
+
+  const handlePatientSubmit = (data) => {
+    console.log("Patient Form Data: ", data);
+    navigate('/Chat'); // Navigate to chat page after form submission
+  };
+  
 
   return (
-    <div className='flex justify-center items-center' style={{ marginLeft: '250px' }}>
-      <div className='w-full max-w-4xl mt-24 flex'>
-        {/* John Smith Image */}
-        <div className='relative mr-10'> 
-          <img
-            src={Logo}
-            alt='John Smith'
-            className='w-96 h-2/3 object-cover rounded-t-lg shadow-lg'
-          />
-          <div className='bg-[#487FC6] w-full h-1/3 rounded-b-lg flex items-center justify-center'>
-            <p className='text-white text-lg font-bold'>John Smith</p>
-          </div>
-        </div>
-
-        {/* Chatbox */}
-        <div className='flex-1'>
-          <div className='flex flex-col bg-white w-96 h-[600px] rounded-lg shadow-lg'> 
-            <div className='bg-[#487FC6] text-white text-lg font-bold p-2 rounded-t-lg'>
-              Patient Interaction
-            </div>
-            
-            {/* Chat Messages */}
-            <div className='flex-grow overflow-y-auto p-4'>
-            {chatLog.map((message, index) => (
-                <div key={index} className={`flex ${
-                  message.type === 'user' ? 'justify-end' : 'justify-start'
-                  }`}>
-                  <div className={`${
-                    message.type === 'user' ? 'bg-[#365f8b]' : 'bg-gray-800'
-                  } rounded-lg p-4 text-white max-w-sm ${
-                    message.type === 'user' ? 'ml-auto' : 'mr-auto'
-                  } mb-2`}
-                  >
-                    {message.message}
-                  </div>
-                </div>
-              ))}
-              {isLoading && <div>Loading...</div>}
-            </div>
-
-            {/* Input Form */}
-            <form onSubmit={handleSubmit} className='flex gap-4 p-4 bg-white border-t border-gray-700 rounded-b-lg'>
-              <input
-                type="text"
-                className="flex-grow px-4 py-2 bg-transparent text-black border border-gray-700 rounded-lg focus:outline-none"
-                placeholder="Type your message..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-              />
-              <button
-                type="submit"
-                className="bg-[#487FC6] rounded-lg px-4 py-2 text-white font-semibold focus:outline-none hover:bg-[#365f8b] transition-colors duration-300"
-              >
-                Send
-              </button>
-            </form>
-          </div>
-        </div>
+    <div className="flex h-screen bg-gray-50 justify-end items-center pr-20"> {/* Adjusted justify and added padding-right */}
+      <div className="w-1/3 bg-white h-2/3 mr-10"> {/* Adjusted margin-right */}
+        <img src={Logo} alt="Laura" className="w-full h-full object-cover" />
+      </div>
+      <div className="w-1/4 bg-white h-2/3"> {/* Adjusted margin-right */}
+        <ChatInterface 
+          chatLog={chatLog}
+          onMessageSubmit={handleSubmit}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+        />
+      </div>
+      <div className="w-1/5 h-2/3 ml-10 overflow-y-auto"> {/* Adjusted margin-left, added overflow style */}
+        <LauraDetails onPatientSubmit={handlePatientSubmit} />
       </div>
     </div>
   );
+  
 }

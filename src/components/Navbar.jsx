@@ -11,7 +11,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className='fixed left-0 top-0 h-full w-[250px] bg-[#FFFFFF] text-[#12266C] flex flex-col justify-between'>
+    <div className='fixed left-0 top-0 h-full w-[250px] bg-[#353D53] text-[#FFFFFF] flex flex-col justify-between'>
       <div>
         <h1 className='text-3xl font-bold p-4'>PatientPortal</h1>
         <ul className='flex flex-col'>
@@ -23,9 +23,6 @@ const Navbar = () => {
           </li>
           <li className='p-4 font-bold'>
             <Link to='/Chat'>Chat</Link>
-          </li>
-          <li className='p-4 font-bold'>
-            <Link to='/About'>About</Link>
           </li>
         </ul>
       </div>

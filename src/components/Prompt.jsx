@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Prompt = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [description, setDescription] = useState(
-    "Name: John Smith\n\n" +
+    "Name: Laura Higgins\n\n" +
     "Age: 45\n\n" +
     "Gender: Male\n\n" +
     "Medications: N/A\n\n" +
