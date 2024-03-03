@@ -30,6 +30,7 @@ Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a can
       [name]: value,
     });
   };
+  
 
   // Serialize patient data into a string
   const serializePatientData = (data) => {
@@ -48,10 +49,11 @@ Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a can
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const serializedData = serializePatientData(patientData);
-    // Navigate to chat and pass serialized patient data as state
-    navigate('/Chat', { state: { patientDetails: serializedData } });
+    const serializedData = JSON.stringify(patientData);
+    console.log('Serialized patient data:', serializedData);
+    navigate('/Chat');
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
