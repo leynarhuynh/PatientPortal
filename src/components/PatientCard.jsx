@@ -21,25 +21,24 @@ const PatientCard = ({
   }
 
   return (
-    <div className='bg-white p-6 rounded-lg shadow-xl flex flex-col justify-between'> {/* Changed shadow-lg to shadow-xl */}
+    <div className='bg-white p-6 rounded-lg shadow-xl flex flex-col justify-between'> 
       <div className='mb-4'>
         <img src={image} alt={`${name}'s Profile`} className='w-32 h-32 rounded-full mx-auto' />
-        <h3 className='text-xl font-bold text-center mt-2'>{name}</h3> {/* Changed text-lg to text-xl */}
-        <p className='text-base text-center'>{demographics}</p> {/* Changed text-sm to text-base */}
+        <h3 className='text-xl font-bold text-center mt-2'>{name}</h3> 
+        <p className='text-base text-center'>{demographics}</p>
       </div>
       <div>
-        <p className='text-base'> {/* Changed text-sm to text-base */}
+        <p className='text-base'> 
           <strong>Diagnosis:</strong> {diagnosis}
         </p>
-        <p className='text-base'> {/* Changed text-sm to text-base */}
+        <p className='text-base'> 
           <strong>Medical History:</strong> {medicalHistory && medicalHistory.join(', ')}
         </p>
-        <p className='text-base'> {/* Changed text-sm to text-base */}
+        <p className='text-base'>
           <strong>Current Medication:</strong> {currentMedication && currentMedication.join(', ')}
         </p>
       </div>
       <div className='flex justify-center mt-4'>
-        {/* Navigate to the appropriate pages */}
         <Link to={`/LauraDetails`} className='bg-[#353D53] text-white py-3 px-6 rounded-lg mr-4 text-base font-bold'>
           View Details
         </Link>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+//future versions to create their own patients
 const NewPatient = () => {
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ const NewPatient = () => {
     });
   };
 
-  // Serialize patient data into a string
+  // patient data into a string
   const serializePatientData = (data) => {
     let serialized = `Patient Name: ${data.name}\nAge: ${data.age}\nGender: ${data.gender}\n`;
     serialized += `Medical History: ${data.historyOfPresentIllness}\nMedications: ${data.medications}\n`;

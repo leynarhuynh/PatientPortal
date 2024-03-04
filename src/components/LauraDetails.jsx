@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 const LauraDetails = () => {
   const navigate = useNavigate();
-
   const [patientData, setPatientData] = useState({
     name: 'Laura Higgins',
     age: '63',
     gender: 'Female',
-    describeProblem: '',
+    describeProblem: 'Right Fractured fibula, broken teeth, minor facial bruising, right arm and shoulder minor bruising from a fall outside of house. She did not sustain a concussion (did not hit head) and has no symptoms related to a possible concussion',
     pastMedicalHistory: ['Breathing Problems'],
     medications: '3 days of oxycodone/APAP (Percocet). 2.5/325 mg. Ibuprofen 800 mg. every 8 hours as needed. Percocet every 6 hours for break through pain.',
     allergies: 'No known allergies',
@@ -31,28 +30,12 @@ Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a can
     });
   };
   
-
-  // Serialize patient data into a string
-  const serializePatientData = (data) => {
-    let serialized = `Patient Name: ${data.name}\nAge: ${data.age}\nGender: ${data.gender}\n`;
-    serialized += `Problem Description: ${data.describeProblem}\n`;
-    serialized += `Medical History: ${data.pastMedicalHistory.join(', ')}\n`;
-    serialized += `Medications: ${data.medications}\n`;
-    serialized += `Allergies: ${data.allergies}\n`;
-    serialized += `Blood Pressure: ${data.bloodPressure}\n`;
-    serialized += `Family History: ${data.familyHistory}\n`;
-    serialized += `Social History: Smoking - ${data.smoking}, Drinking - ${data.drinking}, Drug Use - ${data.drugUse}\n`;
-    serialized += `Scenario: ${data.scenario}\n`;
-    serialized += `Additional Instructions: ${data.additionalInstructions}`;
-    return serialized;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    const serializedData = JSON.stringify(patientData);
-    console.log('Serialized patient data:', serializedData);
-    navigate('/Chat');
-  };
+    // Pass patientData as state in navigate
+    navigate('/Chat', { state: { patientDetails: patientData } });
+};
+
   
 
   return (
@@ -64,167 +47,188 @@ Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a can
         <h2 className="text-2xl font-bold mb-4 text-center">
           Patient Information Form
         </h2>
-
-        {/* Name and Date */}
+        
+        {/* Basic Information */}
         <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Name and Date</h3>
-          <div className="flex justify-between gap-4">
-            <div className="flex-1">
+          <h3 className="text-lg font-semibold mb-2">Basic Information</h3>
+          <div className="grid grid-cols-3 gap-4">
+            {/* Name */}
+            <div>
               <label className="block text-sm font-medium text-gray-700">
                 Name:
               </label>
-                <input
+              <input
                 type="text"
                 name="name"
                 value={patientData.name}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
+              />
+            </div>
+            {/* Age */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
                 Age:
-                <input
+              </label>
+              <input
                 type="text"
                 name="age"
                 value={patientData.age}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
+              />
+            </div>
+            {/* Gender */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
                 Gender:
-                <input
+              </label>
+              <input
                 type="text"
                 name="gender"
                 value={patientData.gender}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-
-                {/* Problem Description */}
-                <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">Problem Description</h3>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                    Describe Problem:
-                    </label>
-                    <input
-                    type="text"
-                    name="describeProblem"
-                    value={patientData.describeProblem}
-                    onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                </div>
-                </div>
-
-                {/* Medication */}
-                <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">Medication History</h3>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                    Medications:  
-                    </label>
-                    <input
-                    type="text"
-                    name="medications"
-                    value={patientData.medications}
-                    onChange={handleChange}
-                    className="mb-4 selection:mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                    <label className="block text-sm font-medium text-gray-700">
-                    Allergies:  
-                    </label>
-                    <input
-                    type="text"
-                    name="allergies"
-                    value={patientData.allergies}
-                    onChange={handleChange}
-                    className="mb-4 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                    <label className="block text-sm font-medium text-gray-700">
-                    Blood Pressure:  
-                    </label>
-                    <input
-                    type="text"
-                    name="bloodPressure"
-                    value={patientData.bloodPressure}
-                    onChange={handleChange}
-                    className="mb-4 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                </div>
-                </div>
-
-
-                <h3 className="text-lg font-semibold mb-2">Family History:</h3>   
-                <textarea
-                name="familyHistory"
-                value={patientData.familyHistory}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-
-
-                {/* Social */}
-                <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">Social History</h3>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                    Smoking:  
-                    </label>
-                    <input
-                    type="text"
-                    name="smoking"
-                    value={patientData.smoking}
-                    onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                    <label className="block text-sm font-medium text-gray-700">
-                    Drinking:  
-                    </label>
-                    <input
-                    type="text"
-                    name="drinking"
-                    value={patientData.drinking}
-                    onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                    <label className="block text-sm font-medium text-gray-700">
-                    Drug Use:  
-                    </label>
-                    <input
-                    type="text"
-                    name="drugUse"
-                    value={patientData.drugUse}
-                    onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                </div>
-                </div>
-
-                <h3 className="text-lg font-semibold mb-2">Scenario:</h3>   
-                <textarea
-                name="scenario"
-                value={patientData.scenario}
-                onChange={handleChange}
-                className="mb-4 selection:mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-
-                {/* Additional Instructions */}
-                <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">Additional Instructions</h3>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                    </label>
-                    <textarea
-                    name="additionalInstructions"
-                    value={patientData.additionalInstructions}
-                    onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                </div>
-                </div>
+              />
             </div>
           </div>
         </div>
 
-        {/* Submit Button */}
+        {/* Problem Description */}
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">Problem Description</h3>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Describe Problem:
+            </label>
+            <textarea
+              name="describeProblem"
+              value={patientData.describeProblem}
+              onChange={handleChange}
+              className="mb-4 mt-1 block w-full rounded-md border-gray-300 shadow-sm h-32" // Adjusted height
+            />
+          </div>
+        </div>
+
+        {/* Medication History */}
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">Medication History</h3>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Medications:
+            </label>
+            <textarea
+              name="medications"
+              value={patientData.medications}
+              onChange={handleChange}
+              className="mb-4 mt-1 block w-full rounded-md border-gray-300 shadow-sm h-32" // Adjusted height
+            />
+          </div>
+        </div>
+
+        {/* Allergies */}
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">Allergies</h3>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Allergies:
+            </label>
+            <textarea
+              name="allergies"
+              value={patientData.allergies}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            />
+          </div>
+        </div>
+
+        {/* Blood Pressure */}
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">Blood Pressure</h3>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Blood Pressure:
+            </label>
+            <textarea
+              name="bloodPressure"
+              value={patientData.bloodPressure}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            />
+          </div>
+        </div>
+
+        {/* Family History */}
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">Family History</h3>   
+          <textarea
+            name="familyHistory"
+            value={patientData.familyHistory}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          />
+        </div>
+
+        {/* Social History */}
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">Social History</h3>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Smoking:
+            </label>
+            <input
+              type="text"
+              name="smoking"
+              value={patientData.smoking}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            />
+            <label className="block text-sm font-medium text-gray-700">
+              Drinking:
+            </label>
+            <input
+              type="text"
+              name="drinking"
+              value={patientData.drinking}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            />
+            <label className="block text-sm font-medium text-gray-700">
+              Drug Use:
+            </label>
+            <input
+              type="text"
+              name="drugUse"
+              value={patientData.drugUse}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            />
+          </div>
+        </div>
+
+        {/* Scenario */}
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">Scenario</h3>
+          <textarea
+            name="scenario"
+            value={patientData.scenario}
+            onChange={handleChange}
+            className="mb-4 mt-1 block w-full rounded-md border-gray-300 shadow-sm h-32" // Adjusted height
+          />
+        </div>
+
+        {/* Additional Instructions */}
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">Additional Instructions</h3>
+          <textarea
+            name="additionalInstructions"
+            value={patientData.additionalInstructions}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          />
+        </div>
+
+        {/* Submit button */}
         <div className="text-center mt-4">
           <button
             type="submit"
