@@ -4,11 +4,12 @@ import PatientCard from './PatientCard';
 import Logo from '../images/john.png';
 import Logo2 from '../images/laura.png';
 
+//current patients
 const patientsData = [
   {
     id: 1,
     name: 'John Smith',
-    demographics: '[Male] [10 yrs]',
+    demographics: '[Male] [34 yrs]',
     diagnosis: ['Diabetes'],
     medicalHistory: ['Family History - Glaucoma', 'Asthma'],
     currentMedication: ['Metformin', 'Glucophage'],
@@ -17,13 +18,12 @@ const patientsData = [
   {
     id: 2,
     name: 'Laura Higgins',
-    demographics: '[Female] [27 yrs]',
+    demographics: '[Female] [63 yrs]',
     diagnosis: ['Parkinsons'],
     medicalHistory: ['Family History - Glaucoma', 'Asthma'],
     currentMedication: ['Levodopa'],
     image: Logo2, 
   },
-  // add more patients
 ];
 
 const Patients = () => {
@@ -39,10 +39,9 @@ const Patients = () => {
     diagnosis: [],
     medicalHistory: [],
     currentMedication: [],
-    image: Logo, // Default image
+    image: Logo, 
   });
 
-  // Function to handle adding a new patient
   const handleAddPatient = () => {
     if (newPatientDetails.name.trim() === '') {
       return;
@@ -73,7 +72,7 @@ const Patients = () => {
 
   return (
     <div className='ml-[280px] mt-8'>
-      <div className="flex items-center justify-between mb-8"> {/* Added container for the heading and button */}
+      <div className="flex items-center justify-between mb-8"> 
         <h1 className='text-3xl font-bold text-[#353D53]'>Create a New Patient</h1>
         <button 
           className="bg-[#353D53] text-white py-4 px-8 rounded-lg text-lg hover:bg-[#434F70] transition duration-200 ml-280px"
@@ -82,9 +81,9 @@ const Patients = () => {
           Create New Patient
         </button>
       </div>
-      <hr className="mb-5 border-b-2 border-gray-400" /> {/* Line under "Create a New Patient" */}
-      <h2 className="mb-20 text-3xl text-[#353D53]">Recent Patients</h2> {/* Heading for recent patients */}
-      <div className='grid grid-cols-2 gap-4'> {/* Adjusted to have 2 columns */}
+      <hr className="mb-5 border-b-2 border-gray-400" /> 
+      <h2 className="mb-20 text-3xl text-[#353D53]">Recent Patients</h2> 
+      <div className='grid grid-cols-2 gap-4'>
         {patientsData.map((patient) => (
           <PatientCard
             key={patient.id}
