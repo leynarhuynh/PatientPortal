@@ -7,15 +7,15 @@ const LauraDetails = () => {
     name: 'Laura Higgins',
     age: '63',
     gender: 'Female',
-    describeProblem: 'Right Fractured fibula, broken teeth, minor facial bruising, right arm and shoulder minor bruising from a fall outside of house. She did not sustain a concussion (did not hit head) and has no symptoms related to a possible concussion',
+    describeProblem: 'Right Fractured fibula, broken teeth, minor facial bruising, right arm and shoulder minor bruising from a fall outside of house. She did not sustain a concussion (did not hit head) and has no symptoms related to a possible concussion. Parkinson’s Disease, arthritis in knees, hearing loss in both ears. She had early on set of Parkinsons and was in her early 50s when she was diagnosed. She has had arthritis for about 5 years. She normally wears hearing aids and has been wearing them for about a year.',
     pastMedicalHistory: ['Breathing Problems'],
-    medications: '3 days of oxycodone/APAP (Percocet). 2.5/325 mg. Ibuprofen 800 mg. every 8 hours as needed. Percocet every 6 hours for break through pain.',
+    medications: 'Levodopa/carbidopa 25 mg/100 mg three times daily with meals.\nTylenol for knees.\nIf asked, she sometimes does not take her medication on time.',
     allergies: 'No known allergies',
     bloodPressure: '120/75 (no history of hypertension)',
-    familyHistory: 'Parkinson’s Disease, arthritis in knees, hearing loss in both ears.',
-    smoking: 'N/A',
-    drinking: 'N/A',
-    drugUse: 'N/A',
+    familyHistory: 'Mother died at 92 (4 years ago) due to “old age” – had hypertension in her 80’s, and otherwise healthy\nFather died at 76 due to heart attack – had had undiagnosed heart disease. No other known chronic conditions or unknown\nSister – 58 years old is healthy',
+    smoking: 'No history of smoking',
+    drinking: 'Two drinks a year on special occasions',
+    drugUse: 'No history of recreational or medicinal drug use',
     scenario: `Ms. Higgins fell when leaving her house one morning to get her mail. There is a step down from her apartment door to the walkway in her apartment complex (she lives in the bottom unit). She was using her cane at the time when she fell. A neighbor saw her fall and called 911, and she was transported by ambulance to the ED, where she was diagnosed with a right fibula fracture (non-displaced and no-ankle involvement), observed overnight, did not require surgery and was casted with follow-up care. She also has a broken tooth from the fall, and some minor shoulder pain and bruising from the fall. She was sent home the next day following an Orthopedic consult, which recommended non-weightbearing for two weeks. She did not hit her head when she fell but did hit her face.
 
 Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a cane for the last 8 months. She also has hearing loss and wears hearing aids (Genesis AI) due to bilateral hearing loss. She, did not have her hearing aids in when she fell, and thus did not have them in her ears during EMT transport. She has been using an assistive listening device while in the hospital ED. She did not find any part of the tooth when she fell. At the time of discharge, most of her pain is in her leg, and has some pain in her mouth from the tooth and also some arm/shoulder pain from bruising.`,
@@ -105,7 +105,7 @@ Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a can
               name="describeProblem"
               value={patientData.describeProblem}
               onChange={handleChange}
-              className="mb-4 mt-1 block w-full rounded-md border-gray-300 shadow-sm h-32" // Adjusted height
+              className="mb-4 mt-1 block w-full rounded-md border-gray-300 shadow-sm h-32" 
             />
           </div>
         </div>
@@ -121,7 +121,7 @@ Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a can
               name="medications"
               value={patientData.medications}
               onChange={handleChange}
-              className="mb-4 mt-1 block w-full rounded-md border-gray-300 shadow-sm h-32" // Adjusted height
+              className="mb-4 mt-1 block w-full rounded-md border-gray-300 shadow-sm h-32" 
             />
           </div>
         </div>
@@ -165,7 +165,7 @@ Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a can
             name="familyHistory"
             value={patientData.familyHistory}
             onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-32"
           />
         </div>
 
