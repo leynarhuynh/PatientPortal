@@ -7,9 +7,9 @@ import LauraDetails from './LauraDetails';
 function adjustMessagePatientDetails(patientDetails) {
   let systemMessageContent = "Provide general advice.";
   if (patientDetails && patientDetails.condition === "parkinsons") {
-    systemMessageContent = "Give advice as if speaking to a patient with parkinsons.";
+    systemMessageContent = "Give responses as if you are a patient with parkinsons and talking to a doctor.";
   } else {
-    systemMessageContent = "Give advice as if speaking to a patient that is sick.";
+    systemMessageContent = "Give responses as if you are a patient with a sickness and talking to a doctor.";
   }
   return systemMessageContent;
 }
@@ -30,7 +30,7 @@ const ChatMessage = ({ message, type }) => {
   );
 };
 
-const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue }) => {
+const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue, isLoading }) => {
   return (
     <div className="flex flex-col justify-between h-full">
       <div className="overflow-y-auto p-4 space-y-2">
@@ -38,6 +38,7 @@ const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue }) 
           <ChatMessage key={index} message={message.message} type={message.type} />
         ))}
       </div>
+      {isLoading && <TypingIndicator />}
       <form onSubmit={onMessageSubmit} className="border-t-2 border-gray-200 p-4 flex">
         <input
           type="text"
@@ -67,40 +68,51 @@ export default function Chatbox() {
     sendMessage(inputValue);
     setInputValue('');
   };
-  
+
   const sendMessage = (message) => {
     const systemMessageContent = adjustMessagePatientDetails(patientDetails);
-
     const url = 'http://localhost:5000/api/chat';
+  
+    // holds chat history
+    const messagesForAPI = chatLog.map(c => ({
+      role: c.type === 'user' ? 'user' : 'assistant',
+      content: c.message
+    }));
+  
+    // adds new message
+    messagesForAPI.push({
+      role: "user",
+      content: message
+    });
+  
     const data = {
-      messages: [{
-        role: "user",
-        content: message
-      }],
+      messages: messagesForAPI,
       patientDetails: patientDetails,
-      systemMessage: systemMessageContent 
+      systemMessage: systemMessageContent
     };
-
+  
     setIsLoading(true);
     console.log('DATA SENT TO SERVER', data);
-
+  
     axios.post(url, data)
       .then((response) => {
         const choice = response.data.choices[0];
         setChatLog(prevChatLog => [...prevChatLog, { type: 'assistant', message: choice.message.content }]);
-        setIsLoading(false);
       })
       .catch((error) => {
         console.error('Error sending message:', error);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
-
+  
+  
   const handlePatientSubmit = (serializedData) => {
     setFormData({ ...formData, patientDetails: serializedData }); 
     navigate('/Chat', { state: { patientDetails: serializedData } });
   };
-  
+
   return (
     <div className="flex h-screen bg-gray-50 justify-end items-center pr-20"> 
       <div className="w-1/3 bg-white h-2/3 mr-10"> 
@@ -112,12 +124,12 @@ export default function Chatbox() {
           onMessageSubmit={(event) => handleSubmit(event, formData.patientDetails)}
           inputValue={inputValue}
           setInputValue={setInputValue}
+          isLoading={isLoading} 
         />
       </div>
       <div className="w-1/5 h-2/3 ml-10 overflow-y-auto"> 
         <LauraDetails onPatientSubmit={handlePatientSubmit} />
       </div>
-      {isLoading && <TypingIndicator />}
     </div>
   );
 }
