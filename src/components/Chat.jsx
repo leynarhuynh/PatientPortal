@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import LauraDetails from './LauraDetails'; 
 
+
 function adjustMessagePatientDetails(patientDetails) {
   let systemMessageContent = "Provide general advice.";
   if (patientDetails && patientDetails.condition === "parkinsons") {
@@ -71,8 +72,7 @@ export default function Chatbox() {
 
   const sendMessage = (message) => {
     const systemMessageContent = adjustMessagePatientDetails(patientDetails);
-    const url = 'http://localhost:5000/api/chat';
-  
+    // const url = 'http://localhost:5000/api/chat';
     // holds chat history
     const messagesForAPI = chatLog.map(c => ({
       role: c.type === 'user' ? 'user' : 'assistant',
@@ -93,20 +93,36 @@ export default function Chatbox() {
   
     setIsLoading(true);
     console.log('DATA SENT TO SERVER', data);
-  
-    axios.post(url, data)
-      .then((response) => {
-        const choice = response.data.choices[0];
-        setChatLog(prevChatLog => [...prevChatLog, { type: 'assistant', message: choice.message.content }]);
-      })
-      .catch((error) => {
-        console.error('Error sending message:', error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    ChatGPTResponse(message);
   };
+
+  const ChatGPTResponse = (messages) => {
+    // const url = 'http://127.0.0.1:4000/completion'
+    const url = 'http://44.209.126.3/completion';
+    const headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+    const data = {
+      "message": messages
+    }
+    axios.post(url, data, {
+      headers: headers
+    })
+    .then(response => {
+      const choice = response.data.message_response
+      console.log(response);
+      setChatLog(prevChatLog => [...prevChatLog, { type: 'assistant', message: choice}]);
+    })
+    .catch(error => {
+      console.error('Error', error);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    })
+  }
   
+
   
   const handlePatientSubmit = (serializedData) => {
     setFormData({ ...formData, patientDetails: serializedData }); 
