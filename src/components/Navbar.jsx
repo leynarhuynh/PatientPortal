@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import { SlPeople, SlMessageCircle, SlInfo } from 'react-icons/sl'; // Import other icons you need
+import { SlPeople, SlMessageCircle, SlInfo } from 'react-icons/sl';
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
@@ -17,15 +17,15 @@ const Navbar = () => {
         <div className='mb-10 text-3xl font-bold p-4 items-center'>PatientPortal</div>
         <ul className='flex flex-col items-center'>
           <li className='mb-10 p-4 font-bold flex flex-col items-center'>
-            <SlPeople size={50} /> 
+            <Link to='/Patients'><SlPeople size={50} /> </Link>
             <Link to='/Patients'>Patients</Link>
           </li>
           <li className='mb-10 p-4 font-bold flex flex-col items-center'>
-            <IoChatbubbleEllipsesOutline size={50}/> 
+          <Link to='/Chat'><IoChatbubbleEllipsesOutline size={50}/></Link>
             <Link to='/Chat'>Chat</Link>
           </li>
           <li className='mb-10 p-4 font-bold flex flex-col items-center'>
-            <SlInfo size={50} />
+          <Link to='/About'><SlInfo size={50} /></Link>
             <Link to='/About'>About</Link>
           </li>
         </ul>
