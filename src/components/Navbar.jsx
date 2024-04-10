@@ -12,9 +12,9 @@ const Navbar = () => {
   };
 
   return (
-    <div className='fixed left-0 top-0 w-[250px] bg-[#353D53] text-white flex flex-col justify-between h-full'>
+    <div className='fixed left-0 top-0 w-[160px] bg-[#353D53] text-white flex flex-col justify-between h-full'>
       <div className='flex flex-col items-center'>
-        <div className='mb-10 text-3xl font-bold p-4 items-center'>PatientPortal</div>
+        <div className='mb-10 text-2xl font-bold p-4 items-center'>PatientPortal</div>
         <ul className='flex flex-col items-center'>
           <li className='mb-10 p-4 font-bold flex flex-col items-center'>
             <Link to='/Patients'><SlPeople size={50} /> </Link>
@@ -29,9 +29,6 @@ const Navbar = () => {
             <Link to='/About'>About</Link>
           </li>
         </ul>
-      </div>
-      <div className='p-4' onClick={handleNav}>
-        {nav ? <AiOutlineClose size={40} /> : <AiOutlineMenu size={20} />}
       </div>
     </div>
   );
