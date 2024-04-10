@@ -71,7 +71,7 @@ const Patients = () => {
   };
 
   return (
-    <div className='ml-[280px] mt-8'>
+    <div className='ml-[280px] mt-8 mr-20'>
       <div className="flex items-center justify-between mb-8"> 
         <h1 className='text-3xl font-bold text-[#353D53]'>Create a New Patient</h1>
         <button 
