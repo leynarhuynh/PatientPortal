@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../images/healthLogo.png';
+import Logo from '../images/doctor.png'; 
 import { Link } from 'react-router-dom';
 
 const About = () => {

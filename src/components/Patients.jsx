@@ -93,7 +93,7 @@ const Patients = () => {
             medicalHistory={patient.medicalHistory}
             currentMedication={patient.currentMedication}
             image={patient.image}
-            onClick={() => navigate(`/NewPatient`)} 
+            onClick={() => navigate(`/LauraDetails`)} 
           />
         ))}
       </div>
@@ -107,6 +107,30 @@ const Patients = () => {
               value={newPatientDetails.name}
               onChange={(e) =>
                 setNewPatientDetails({ ...newPatientDetails, name: e.target.value })
+              }
+            />
+            <input
+              type='text'
+              placeholder='Gender'
+              value={newPatientDetails.gender}
+              onChange={(e) =>
+                setNewPatientDetails({ ...newPatientDetails, gender: e.target.value })
+              }
+            />
+            <input
+              type='number'
+              placeholder='Age'
+              value={newPatientDetails.age}
+              onChange={(e) =>
+                setNewPatientDetails({ ...newPatientDetails, age: e.target.value })
+              }
+            />
+            <input
+              type='text'
+              placeholder='Diagnosis'
+              value={newPatientDetails.diagnosis.join(', ')}
+              onChange={(e) =>
+                setNewPatientDetails({ ...newPatientDetails, diagnosis: e.target.value.split(',').map(diag => diag.trim()) })
               }
             />
             <button className='mr-2' onClick={handleAddPatient}>Save</button>
