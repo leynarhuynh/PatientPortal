@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <div className='fixed left-0 top-0 w-[160px] bg-[#353D53] text-white flex flex-col justify-between h-full'>
       <div className='flex flex-col items-center'>
-        <div className='mb-10 text-2xl font-bold p-4 items-center'>PatientPortal</div>
+        <Link to='/'><div className='mb-10 text-2xl font-bold p-4 items-center'>PatientPortal</div></Link>
         <ul className='flex flex-col items-center'>
           <li className='mb-10 p-4 font-bold flex flex-col items-center'>
             <Link to='/Patients'><SlPeople size={50} /> </Link>
