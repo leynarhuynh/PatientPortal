@@ -18,7 +18,7 @@ function App() {
   const isHomePage = location.pathname === '/';
   return (
     <div>
-      {isHomePage && <NavbarHome />}
+      {isHomePage && <Navbar />}
       {!isHomePage && <Navbar />}
       <Routes>
         <Route path="/" Component={Home}/>
