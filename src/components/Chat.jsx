@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Logo from '../images/lauraPatient.png';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -46,12 +46,21 @@ const TypingIndicator = () => (
 );
 
 const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue, isLoading }) => {
+  const endOfMessages = useRef(null);
+  const scrollToBottom = () => {
+    endOfMessages.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatLog]);
+
   return (
     <div className="flex flex-col justify-between h-full">
-      <div className="overflow-y-auto p-4 space-y-2">
+      <div className="overflow-y-auto p-4 space-y-2" style={{ maxHeight: '80vh' }}>
         {chatLog.map((message, index) => (
           <ChatMessage key={index} message={message.message} type={message.type} />
         ))}
+        <div ref={endOfMessages} />
       </div>
       <div className="flex flex-col w-full">
         {isLoading && <TypingIndicator />}
@@ -149,22 +158,44 @@ export default function Chatbox() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 justify-end items-center pr-10"> 
-      <div className="w-1/3 bg-white h-2/3 mr-10"> 
+    <div className="flex h-screen bg-gray-50 items-center justify-end">
+      <div className="flex-1 bg-white h-2/3 flex justify-center items-center p-4" style={{ maxWidth: '32%' }}>
         <img src={Logo} alt="Laura" className="w-full h-full object-cover" />
       </div>
-      <div className="w-1/4 bg-white h-2/3"> 
+      <div className="flex-1 bg-white h-2/3" px-10 style={{ maxWidth: '33%' }}> 
         <ChatInterface 
           chatLog={chatLog}
-          onMessageSubmit={(event) => handleSubmit(event, formData.patientDetails)}
+          onMessageSubmit={handleSubmit}
           inputValue={inputValue}
           setInputValue={setInputValue}
           isLoading={isLoading} 
         />
       </div>
-      <div className="w-1/4 h-2/3 ml-10 overflow-y-auto"> 
+      <div className="flex-1 bg-white h-2/3 overflow-y-auto" style={{ maxWidth: '33%' }}> 
         <LauraDetails onPatientSubmit={handlePatientSubmit} />
       </div>
     </div>
   );
 }
+
+
+//   return (
+//     <div className="flex h-screen bg-gray-50 justify-end items-center pr-10"> 
+//       <div className="w-1/3 bg-white h-2/3 mr-10 "> 
+//         <img src={Logo} alt="Laura" className="w-full h-full object-cover" />
+//       </div>
+//       <div className="w-1/3 bg-white h-2/3"> 
+//         <ChatInterface 
+//           chatLog={chatLog}
+//           onMessageSubmit={(event) => handleSubmit(event, formData.patientDetails)}
+//           inputValue={inputValue}
+//           setInputValue={setInputValue}
+//           isLoading={isLoading} 
+//         />
+//       </div>
+//       <div className="w-1/3 h-2/3 ml-40 overflow-y-auto"> 
+//         <LauraDetails onPatientSubmit={handlePatientSubmit} />
+//       </div>
+//     </div>
+//   );
+// }

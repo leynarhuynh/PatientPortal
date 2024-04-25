@@ -229,12 +229,12 @@ Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a can
 
         {/* Submit button */}
         <div className="text-center mt-4">
-          <button
+          {/* <button
             type="submit"
             className="px-4 py-2 bg-[#353D53] text-white rounded-md"
           >
             Submit
-          </button>
+          </button> */}
         </div>
       </form>
     </div>
