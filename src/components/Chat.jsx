@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import Logo from '../images/lauraPatient.png';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
 import LauraDetails from './LauraDetails'; 
 
 
@@ -14,37 +14,7 @@ function adjustMessagePatientDetails(patientDetails) {
   }
   return systemMessageContent;
 }
-
-const ChatMessage = ({ message, type }) => {
-  return (
-    <div className={`m-2 ${type === 'user' ? 'self-end' : 'self-start'}`}>
-      {type === 'assistant' && (
-        <div className="flex flex-col items-start mb-2">
-          <span className="text-sm text-gray-600">Laura</span>
-          <img src={Logo} alt="Laura" className="w-10 h-8 mt-1 rounded-xl" />
-        </div>
-      )}
-      <div className={`p-3 rounded-lg ${type === 'user' ? 'bg-[#D6E4FD]' : 'bg-[#EFF0F3]'}`}>
-        <p className="text-black">{message}</p>
-      </div>
-      {type === 'user' && (
-        <div className="text-sm text-gray-600 text-right mt-1">
-          Student
-        </div>
-      )}
-    </div>
-  );
-};
-
-
-const TypingIndicator = () => (
-  <div className="flex items-center justify-start pl-4">
-    <div className="h-2 w-2 bg-gray-400 rounded-full mr-1 animate-bounce"></div>
-    <div className="h-2 w-2 bg-gray-400 rounded-full mr-1 animate-bounce"></div>
-    <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce"></div>
-  </div>
-);
-
+//chatbox layout
 const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue, isLoading }) => {
   const endOfMessages = useRef(null);
   const scrollToBottom = () => {
@@ -78,16 +48,53 @@ const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue, is
     </div>
   );
 };
+// chat messages ui
+const ChatMessage = ({ message, type }) => {
+  return (
+    <div className={`m-2 ${type === 'user' ? 'self-end' : 'self-start'}`}>
+      {type === 'assistant' && (
+        <div className="flex flex-col items-start mb-2">
+          <span className="text-sm text-gray-600">Laura</span>
+          <img src={Logo} alt="Laura" className="w-10 h-8 mt-1 rounded-xl" />
+        </div>
+      )}
+      <div className={`p-3 rounded-lg ${type === 'user' ? 'bg-[#D6E4FD]' : 'bg-[#EFF0F3]'}`}>
+        <p className="text-black">{message}</p>
+      </div>
+      {type === 'user' && (
+        <div className="text-sm text-gray-600 text-right mt-1">
+          Student
+        </div>
+      )}
+    </div>
+  );
+};
+
+const TypingIndicator = () => (
+  <div className="flex items-center justify-start pl-4">
+    <div className="h-2 w-2 bg-gray-400 rounded-full mr-1 animate-bounce"></div>
+    <div className="h-2 w-2 bg-gray-400 rounded-full mr-1 animate-bounce"></div>
+    <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce"></div>
+  </div>
+);
+
 
 
 export default function Chatbox() {
+  //gets unqiue id from url & navigates
+  const { uniqueId } = useParams();
+  const navigate = useNavigate();
+
   const [inputValue, setInputValue] = useState('');
   const [chatLog, setChatLog] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({});
-  const navigate = useNavigate();
   const location = useLocation();
   const patientDetails = location.state?.patientDetails;
+
+  //load chat history?
+  
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -97,30 +104,48 @@ export default function Chatbox() {
   };
 
   const sendMessage = (message) => {
+
+
     const systemMessageContent = adjustMessagePatientDetails(patientDetails);
-    // const url = 'http://localhost:5000/api/chat';
-    // holds chat history
     const messagesForAPI = chatLog.map(c => ({
       role: c.type === 'user' ? 'user' : 'assistant',
       content: c.message
     }));
   
-    // adds new message
+    // Adds new message
     messagesForAPI.push({
       role: "user",
       content: message
     });
   
-    const data = {
-      messages: messagesForAPI,
-      patientDetails: patientDetails,
-      systemMessage: systemMessageContent
+    const conversationLog = chatLog.map(c => ({
+      role: c.type,
+      message: c.message
+    })).reduce((prev, curr) => `${prev}\n${curr.role}: ${curr.message}`, '');
+  
+    const dataForLogging = {
+      userId: uniqueId, 
+      visitNum: 0, 
+      startTime: new Date().toISOString(), 
+      conversationLog: JSON.stringify(conversationLog)
+      // patientForm: JSON.stringify(patientDetails) --> not needed 
     };
   
+    //sends data for logging
+    axios.post('http://localhost:3001/api/updateChat', dataForLogging)
+      .then(response => {
+        console.log('Chat history saved');
+      })
+      .catch(error => {
+        console.error('Error saving chat', error);
+      });
+  
+    //function to handle response from ChatGPT
     setIsLoading(true);
-    console.log('DATA SENT TO SERVER', data);
+    console.log('Current chat', dataForLogging);
     ChatGPTResponse(message);
   };
+  
 
   const ChatGPTResponse = (messages) => {
     // const url = 'http://127.0.0.1:4000/completion'
@@ -177,25 +202,3 @@ export default function Chatbox() {
     </div>
   );
 }
-
-
-//   return (
-//     <div className="flex h-screen bg-gray-50 justify-end items-center pr-10"> 
-//       <div className="w-1/3 bg-white h-2/3 mr-10 "> 
-//         <img src={Logo} alt="Laura" className="w-full h-full object-cover" />
-//       </div>
-//       <div className="w-1/3 bg-white h-2/3"> 
-//         <ChatInterface 
-//           chatLog={chatLog}
-//           onMessageSubmit={(event) => handleSubmit(event, formData.patientDetails)}
-//           inputValue={inputValue}
-//           setInputValue={setInputValue}
-//           isLoading={isLoading} 
-//         />
-//       </div>
-//       <div className="w-1/3 h-2/3 ml-40 overflow-y-auto"> 
-//         <LauraDetails onPatientSubmit={handlePatientSubmit} />
-//       </div>
-//     </div>
-//   );
-// }
