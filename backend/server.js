@@ -35,7 +35,7 @@ app.post('/api/updateChat', async (req, res) => {
     console.log("we are in! 2");
 
     //use chat data from the request body
-    const { userId, visitNum, startTime, conversationLogs, patientForm } = req.body;
+    const { userId, visitNum, conversationLogs } = req.body;
 
     //check recent visit number 
     const result = await pool.request()
@@ -51,21 +51,16 @@ app.post('/api/updateChat', async (req, res) => {
 
     //insert the chat data into the database ADJUST WITH VISITNUM INSTEAD 
     const checkExists = await pool.request()
-      .input('userID', sql.NVarChar, userId)
-      .input('visitNum', sql.Int, visitNum)
-      .query(`SELECT COUNT(*) AS count FROM PatientPortal WHERE UserID = @userID`);
+      .query(`SELECT COUNT(*) AS count FROM PatientPortal WHERE UserID = '${userId}' AND VisitNum = ${visitNum}`);
 
     if (checkExists.recordset[0].count > 0) {
       // If the record exists update 
       await pool.request()
-        .input('userID', sql.NVarChar, userId)
-        .input('visitNum', sql.Int, visitNum)
-        .input('conversationLogs', sql.NVarChar(sql.MAX), conversationLogs) 
-        .query(`UPDATE PatientPortal SET ConversationLogs = @conversationLogs WHERE UserID = @userID AND VisitNum = @visitNum`);
+        .query(`UPDATE PatientPortal SET ConversationLogs = '${conversationLogs}'  WHERE UserID = '${userId}' AND VisitNum = ${visitNum}`);
     } else {
       //if new user, add new row 
       await pool.request()
-        .query(`INSERT INTO PatientPortal (UserID, VisitNum, StartTime, ConversationLogs) VALUES ('${userId}', ${visitNum}, '${startTime}', '${conversationLogs}')`);
+        .query(`INSERT INTO PatientPortal (UserID, VisitNum, ConversationLogs) VALUES ('${userId}', ${visitNum}, '${conversationLogs}')`);
     }
     //send a response back to the client
     res.status(200).json({ message: 'Chat log saved' });

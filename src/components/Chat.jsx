@@ -160,7 +160,6 @@ export default function Chatbox() {
     const dataForLogging = {
       userId: uniqueId,
       visitNum: 0,
-      startTime: new Date().toISOString(),
       conversationLogs: JSON.stringify(conversationLogs) 
     };
   
