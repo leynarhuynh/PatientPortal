@@ -8,6 +8,7 @@ const Home = () => {
   //navigated based on unique ID
   const handleNav = () => {
     const uniqueId = uuidv4(); //generates a new id string 
+    localStorage.setItem('uniqueId', uniqueId);
     navigate('/Chat/${uniqueId}'); 
   }
   return (
