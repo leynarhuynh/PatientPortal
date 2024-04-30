@@ -1,16 +1,28 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 import Demo from '../images/laurademo.gif';
 
 const Home = () => {
   const navigate = useNavigate();
-  //navigated based on unique ID
+  //navigated based on unique ID & stores it locally 
   const handleNav = () => {
     const uniqueId = uuidv4(); //generates a new id string 
     localStorage.setItem('uniqueId', uniqueId);
-    navigate('/Chat/${uniqueId}'); 
+
+    //post request to login for visitNum & redirect to chat page 
+    axios.post('http://localhost:3001/api/login', {userId: uniqueId})
+    .then(response => {
+      const { visitNum } = response.data;
+      navigate(`/Chat/${uniqueId}`, { state: { visitNum } });
+      console.log('sent visitNum!');
+    })
+    .catch(error => {
+      console.error('Error checking visit', error);
+    });
   }
+
   return (
     <div className='flex h-screen bg-gray-50 mt-10'>
       <div className='flex-1 flex flex-col justify-center items-start pl-16'>
