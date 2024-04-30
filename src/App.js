@@ -23,7 +23,7 @@ function App() {
       <Routes>
         <Route path="/" Component={Home}/>
         <Route path="/Patients" Component={Patients} />
-        <Route path="/Chat" Component={Chat}/>
+        <Route path="/Chat/:uniqueId" element={<Chat />} /> {/* goes to chat page based on unqiue id */}
         <Route path="/About" Component={About} />
         <Route path="/Voice" Component={Voice} />
         <Route path="/Prompt" Component={Prompt} />
