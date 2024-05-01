@@ -9,8 +9,8 @@ const Home = () => {
   const uniqueId = useParams();
   const handleNav = () => {
     // const uniqueId = uuidv4();
-    localStorage.setItem('uniqueId', uniqueId);
-    axios.post('http://localhost:3001/api/login', {userId: uniqueId})
+    localStorage.setItem('uniqueId', uniqueId.uniqueId);
+    axios.post('http://patientportal-api.us-east-1.elasticbeanstalk.com/api/login', {userId: uniqueId.uniqueId})
       .then(response => {
         const { visitNum } = response.data;
         navigate(`/Chat/${uniqueId}`, { state: { visitNum } });
