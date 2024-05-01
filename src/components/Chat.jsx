@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import Logo from '../images/lauraPatient.png';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import LauraDetails from './LauraDetails'; 
 
 
@@ -90,7 +91,6 @@ export default function Chatbox() {
   //gets unqiue id from url & navigates
   const { uniqueId } = useParams();
   const navigate = useNavigate();
-
   const [inputValue, setInputValue] = useState('');
   const [chatLog, setChatLog] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -98,10 +98,20 @@ export default function Chatbox() {
   const location = useLocation();
   const patientDetails = location.state?.patientDetails;
 
-  //load chat history?
+  //gets the unique id local storage
+  useEffect(() => {
+    let storedId = localStorage.getItem('uniqueId');
+    if (!storedId) {
+      storedId = uuidv4();
+      localStorage.setItem('uniqueId', storedId);
+      navigate(`/Chat/${storedId}`);
+    } else {
+      if (storedId !== uniqueId) {
+        navigate(`/Chat/${storedId}`);
+      }
+    }
+  }, [navigate, uniqueId]);
   
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
     setChatLog((prevChatLog) => [...prevChatLog, { type: 'user', message: inputValue }]);
@@ -110,32 +120,55 @@ export default function Chatbox() {
   };
 
   const sendMessage = (message) => {
-
-
     const systemMessageContent = adjustMessagePatientDetails(patientDetails);
-    const messagesForAPI = chatLog.map(c => ({
-      role: c.type === 'user' ? 'user' : 'assistant',
-      content: c.message
-    }));
-  
-    // Adds new message
-    messagesForAPI.push({
+    
+    //update the chat log with user message
+    const newUserMessage = {
       role: "user",
-      content: message
+      message: message,
+      timestamp: new Date().toISOString()
+    };
+    setChatLog(prevChatLog => [...prevChatLog, newUserMessage]);
+  
+    //update the chat log with laura message
+    const lauraMessage = {
+      role: "assistant",
+      message: "Laura response",
+      timestamp: new Date().toISOString()
+    };
+  
+    // update the chat log with Laura's response
+    setChatLog(prevChatLog => [...prevChatLog, lauraMessage]);
+  
+    // conversation logs format
+    const conversationLogs = {
+      userQuery: [],
+      userTime: [],
+      lauraQuery: [],
+      lauraTime: []
+    };
+    chatLog.forEach(entry => {
+      if (entry.role === 'user') {
+        conversationLogs.userQuery.push(entry.message);
+        conversationLogs.userTime.push(entry.timestamp);
+      } else if (entry.role === 'assistant') {
+        conversationLogs.lauraQuery.push(entry.message);
+        conversationLogs.lauraTime.push(entry.timestamp);
+      }
     });
   
-    const conversationLog = chatLog.map(c => ({
-      role: c.type,
-      message: c.message
-    })).reduce((prev, curr) => `${prev}\n${curr.role}: ${curr.message}`, '');
+    //add one convo history 
+    conversationLogs.userQuery.push(newUserMessage.message);
+    conversationLogs.userTime.push(newUserMessage.timestamp);
+    conversationLogs.lauraQuery.push(lauraMessage.message);
+    conversationLogs.lauraTime.push(lauraMessage.timestamp);
   
     const dataForLogging = {
-      userId: uniqueId, 
-      visitNum: 0, 
-      startTime: new Date().toISOString(), 
-      conversationLog: JSON.stringify(conversationLog)
-      // patientForm: JSON.stringify(patientDetails) --> not needed 
+      userId: uniqueId,
+      visitNum: 0,
+      conversationLogs: JSON.stringify(conversationLogs) 
     };
+  
   
     //sends data for logging
     axios.post('http://localhost:3001/api/updateChat', dataForLogging)
