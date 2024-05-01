@@ -17,7 +17,6 @@ const LauraDetails = () => {
     drinking: 'Two drinks a year on special occasions',
     drugUse: 'No history of recreational or medicinal drug use',
     scenario: `Ms. Higgins fell when leaving her house one morning to get her mail. There is a step down from her apartment door to the walkway in her apartment complex (she lives in the bottom unit). She was using her cane at the time when she fell. A neighbor saw her fall and called 911, and she was transported by ambulance to the ED, where she was diagnosed with a right fibula fracture (non-displaced and no-ankle involvement), observed overnight, did not require surgery and was casted with follow-up care. She also has a broken tooth from the fall, and some minor shoulder pain and bruising from the fall. She was sent home the next day following an Orthopedic consult, which recommended non-weightbearing for two weeks. She did not hit her head when she fell but did hit her face.
-
 Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a cane for the last 8 months. She also has hearing loss and wears hearing aids (Genesis AI) due to bilateral hearing loss. She, did not have her hearing aids in when she fell, and thus did not have them in her ears during EMT transport. She has been using an assistive listening device while in the hospital ED. She did not find any part of the tooth when she fell. At the time of discharge, most of her pain is in her leg, and has some pain in her mouth from the tooth and also some arm/shoulder pain from bruising.`,
     additionalInstructions: '',
   });
@@ -230,12 +229,12 @@ Ms. Higgins has Parkinsons and arthritis in both knees. She has been using a can
 
         {/* Submit button */}
         <div className="text-center mt-4">
-          <button
+          {/* <button
             type="submit"
             className="px-4 py-2 bg-[#353D53] text-white rounded-md"
           >
             Submit
-          </button>
+          </button> */}
         </div>
       </form>
     </div>
