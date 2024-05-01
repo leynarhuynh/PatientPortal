@@ -51,24 +51,30 @@ const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue, is
 // chat messages ui
 const ChatMessage = ({ message, type }) => {
   return (
-    <div className={`m-2 ${type === 'user' ? 'self-end' : 'self-start'}`}>
+    <div className={`mb-4 flex ${type === 'user' ? 'items-end justify-end' : 'items-start justify-start'}`}>
       {type === 'assistant' && (
-        <div className="flex flex-col items-start mb-2">
-          <span className="text-sm text-gray-600">Laura</span>
-          <img src={Logo} alt="Laura" className="w-10 h-8 mt-1 rounded-xl" />
+        <div className="flex flex-col items-start">
+          <div className="flex items-center mb-1">
+            <img src={Logo} alt="Laura" className="w-8 h-6 mr-2 rounded-full" />
+            <span className="text-sm text-gray-600">Laura</span>
+          </div>
+          <div className={`max-w-[75%] w-auto bg-[#EFF0F3] rounded-lg p-3`}>
+            <p className="text-black">{message}</p>
+          </div>
         </div>
       )}
-      <div className={`p-3 rounded-lg ${type === 'user' ? 'bg-[#D6E4FD]' : 'bg-[#EFF0F3]'}`}>
-        <p className="text-black">{message}</p>
-      </div>
       {type === 'user' && (
-        <div className="text-sm text-gray-600 text-right mt-1">
-          Student
+        <div className="flex flex-col items-end">
+          <div className="text-sm text-gray-600 text-right mb-1">Student</div>
+          <div className={`max-w-[75%] w-auto bg-[#D6E4FD] rounded-lg p-3`}>
+            <p className="text-black">{message}</p>
+          </div>
         </div>
       )}
     </div>
   );
 };
+
 
 const TypingIndicator = () => (
   <div className="flex items-center justify-start pl-4">
