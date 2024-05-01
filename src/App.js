@@ -15,15 +15,15 @@ import {Switch, Route, Routes, useLocation} from 'react-router-dom';
 function App() {
   //remove nav bar from home 
   const location = useLocation();
-  const isHomePage = location.pathname === '/Home';
+  const isHomePage = location.pathname === '/';
   return (
     <div>
-      {isHomePage && <NavbarHome />}
+      {isHomePage && <Navbar />}
       {!isHomePage && <Navbar />}
       <Routes>
-        <Route path="/Home" Component={Home}/>
+        <Route path="/" Component={Home}/>
         <Route path="/Patients" Component={Patients} />
-        <Route path="/Chat" Component={Chat}/>
+        <Route path="/Chat/:uniqueId" element={<Chat />} /> {/* goes to chat page based on unqiue id */}
         <Route path="/About" Component={About} />
         <Route path="/Voice" Component={Voice} />
         <Route path="/Prompt" Component={Prompt} />

@@ -5,21 +5,6 @@ import axios from 'axios';
 import Demo from '../images/laurademo.gif';
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  const handleNav = () => {
-    const uniqueId = uuidv4();
-    localStorage.setItem('uniqueId', uniqueId);
-    axios.post('http://localhost:3001/api/login', {userId: uniqueId})
-      .then(response => {
-        const { visitNum } = response.data;
-        navigate(`/Chat/${uniqueId}`, { state: { visitNum } });
-      })
-      .catch(error => {
-        console.error('Error checking visit', error);
-      });
-  }
-
   return (
     <div className='flex h-screen bg-gray-50'>
       <div className='flex-1 flex flex-col justify-center items-start pl-16 pr-32'>
