@@ -59,7 +59,7 @@ const ChatMessage = ({ message, type }) => {
             <img src={Logo} alt="Laura" className="w-8 h-6 mr-2 rounded-full" />
             <span className="text-sm text-gray-600">Laura</span>
           </div>
-          <div className={`max-w-[75%] w-auto bg-[#EFF0F3] rounded-lg p-3`}>
+          <div className={`max-w-[100%] w-auto bg-[#EFF0F3] rounded-lg p-3`}>
             <p className="text-black">{message}</p>
           </div>
         </div>
@@ -67,7 +67,7 @@ const ChatMessage = ({ message, type }) => {
       {type === 'user' && (
         <div className="flex flex-col items-end">
           <div className="text-sm text-gray-600 text-right mb-1">Student</div>
-          <div className={`max-w-[75%] w-auto bg-[#D6E4FD] rounded-lg p-3`}>
+          <div className={`max-w-[100%] w-auto bg-[#D6E4FD] rounded-lg p-3`}>
             <p className="text-black">{message}</p>
           </div>
         </div>
