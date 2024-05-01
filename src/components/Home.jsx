@@ -1,14 +1,14 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import Demo from '../images/laurademo.gif';
 
 const Home = () => {
   const navigate = useNavigate();
-
+  const uniqueId = useParams();
   const handleNav = () => {
-    const uniqueId = uuidv4();
+    // const uniqueId = uuidv4();
     localStorage.setItem('uniqueId', uniqueId);
     axios.post('http://localhost:3001/api/login', {userId: uniqueId})
       .then(response => {
