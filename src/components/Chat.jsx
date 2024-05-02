@@ -102,14 +102,16 @@ export default function Chatbox() {
 
   //gets the unique id local storage
   useEffect(() => {
-    let storedId = localStorage.getItem('uniqueId');
+    let storedId = localStorage.getItem('uniqueId', uniqueId.uniqueId);
     if (!storedId) {
       storedId = uuidv4();
       localStorage.setItem('uniqueId', storedId);
       navigate(`/Chat/${storedId}`);
+      console.log("no storedId", storedId);
     } else {
       if (storedId !== uniqueId) {
         navigate(`/Chat/${storedId}`);
+        console.log("storedId success", storedId);
       }
     }
   }, [navigate, uniqueId]);
@@ -164,26 +166,22 @@ export default function Chatbox() {
     conversationLogs.userTime.push(newUserMessage.timestamp);
     conversationLogs.lauraQuery.push(lauraMessage.message);
     conversationLogs.lauraTime.push(lauraMessage.timestamp);
-  
-    const dataForLogging = {
+
+    //sends request with chat
+    axios.post('http://patientportal-api.us-east-1.elasticbeanstalk.com/api/updateChat', {
       userId: uniqueId,
       visitNum: 0,
-      conversationLogs: JSON.stringify(conversationLogs) 
-    };
-  
-  
-    //sends data for logging
-    axios.post('patientportal-api.us-east-1.elasticbeanstalk.com/api/updateChat', dataForLogging)
-      .then(response => {
-        console.log('Chat history saved');
-      })
-      .catch(error => {
-        console.error('Error saving chat', error);
-      });
+      conversationLogs: JSON.stringify(conversationLogs)
+    }).then(response => {
+      console.log('Chat history saved', response);
+    }).catch(error => {
+      console.error('Error saving chat', error);
+    });
+
   
     //function to handle response from ChatGPT
     setIsLoading(true);
-    console.log('Current chat', dataForLogging);
+    console.log('Made it!');
     ChatGPTResponse(message);
   };
   
