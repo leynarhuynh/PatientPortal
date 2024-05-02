@@ -30,9 +30,7 @@ const Home = () => {
           video or simply getting started to talk to Laura to start the collaborative care.
         </p>
         <div className="flex items-center mb-4">
-          <Link to="https://verg.cise.ufl.edu/" className="text-2xl font-medium text-black-600 hover:text-blue-800 transition-colors mr-4">
-            Questions?
-          </Link>
+        <button className="text-2xl font-medium text-black-600 mr-2" onClick={() => window.location = 'mailto:huynhleyna@ufl.edu'}>Questions?</button>
           <button
             onClick={handleNav} 
             className='text-black-600 flex items-center w-max py-2 px-6 border border-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full font-medium text-2xl'
