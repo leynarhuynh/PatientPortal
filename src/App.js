@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import {Switch, Route, Routes, useLocation} from 'react-router-dom';
+import { jsPDF } from 'jspdf';
 import Navbar from './components/Navbar'
 import NavbarHome from './components/NavbarHome'
 import Home from './components/Home'
@@ -9,7 +11,6 @@ import Voice from "./components/Voice";
 import Prompt from "./components/Prompt";
 import NewPatient from "./components/NewPatient";
 import LauraDetails from "./components/LauraDetails";
-import {Switch, Route, Routes, useLocation} from 'react-router-dom';
 
 
 function App() {
