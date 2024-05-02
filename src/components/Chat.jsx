@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { FaFileDownload } from "react-icons/fa";
 import { jsPDF } from 'jspdf';
 import Logo from '../images/lauraPatient.png';
 import axios from 'axios';
@@ -134,7 +135,7 @@ export default function Chatbox() {
     //update the chat log with laura message
     const lauraMessage = {
       role: "assistant",
-      // message: "Laura response",
+      message: "Laura response",
       timestamp: new Date().toISOString()
     };
   
@@ -252,25 +253,36 @@ export default function Chatbox() {
     navigate('/Chat', { state: { patientDetails: serializedData } });
   };
 
-  return (
-    <div className="flex h-screen bg-gray-50 items-center justify-end">
-      <div className="flex-1 bg-white h-2/3 flex justify-center items-center p-4" style={{ maxWidth: '32%' }}>
-        <img src={Logo} alt="Laura" className="w-full h-full object-cover" />
-      </div>
-      <div className="flex-1 bg-white h-2/3" px-10 style={{ maxWidth: '33%' }}> 
-        <ChatInterface 
-          chatLog={chatLog}
-          onMessageSubmit={handleSubmit}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          isLoading={isLoading} 
-        />
-      </div>
-      <div className="flex-1 bg-white h-2/3 overflow-y-auto" style={{ maxWidth: '33%' }}> 
-        <LauraDetails onPatientSubmit={handlePatientSubmit} />
-      </div>
-      <button className='text-black-600 flex items-center w-max py-2 px-6 border border-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full font-medium text-2xl'
-onClick={() => exportChatLog(chatLog)}>Export Chat as PDF</button>
+return (
+  <div className="flex h-screen bg-gray-50 items-center justify-end">
+    <div className="flex-1 bg-white h-2/3 flex justify-center items-center p-4" style={{ maxWidth: '32%' }}>
+      <img src={Logo} alt="Laura" className="w-full h-full object-cover" />
     </div>
-  );
+    <div className="flex-1 bg-white h-2/3" px-10 style={{ maxWidth: '33%' }}> 
+      <ChatInterface 
+        chatLog={chatLog}
+        onMessageSubmit={handleSubmit}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        isLoading={isLoading} 
+      />
+    </div>
+    <div className="flex-1 bg-white h-2/3 overflow-y-auto" style={{ maxWidth: '33%' }}> 
+      <LauraDetails onPatientSubmit={handlePatientSubmit} />
+    </div>
+    <button
+        style={{
+          position: 'fixed',
+          right: '20px',
+          bottom: '20px',
+          zIndex: 1000
+        }}
+        className='text-black-600 flex items-center w-max py-2 px-6 transition-colors rounded-full font-medium'
+        onClick={() => exportChatLog(chatLog)}
+      >
+        <FaFileDownload size={24} />
+      </button>
+  </div>
+);
+
 }
