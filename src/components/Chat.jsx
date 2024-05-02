@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { jsPDF } from 'jspdf';
 import Logo from '../images/lauraPatient.png';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
@@ -133,7 +134,7 @@ export default function Chatbox() {
     //update the chat log with laura message
     const lauraMessage = {
       role: "assistant",
-      message: "Laura response",
+      // message: "Laura response",
       timestamp: new Date().toISOString()
     };
   
@@ -171,7 +172,7 @@ export default function Chatbox() {
   
   
     //sends data for logging
-    axios.post('http://localhost:3001/api/updateChat', dataForLogging)
+    axios.post('patientportal-api.us-east-1.elasticbeanstalk.com/api/updateChat', dataForLogging)
       .then(response => {
         console.log('Chat history saved');
       })
@@ -213,8 +214,38 @@ export default function Chatbox() {
       setIsLoading(false);
     })
   }
-  
 
+  function exportChatLog(chatLog) {
+    const doc = new jsPDF();
+    let y = 20; 
+    const margin = 5; 
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const maxTextWidth = pageWidth - 2 * margin; // calculate the maximum width of the text
+    //starting role
+    let lastRole = 'user';
+    chatLog.forEach((entry, index) => {
+      //get rid of laura's extra response
+      if (entry.message === "Laura response" && entry.role === 'assistant') return;
+  
+      //check not dupe role 
+      if (index === 0 || entry.role !== lastRole) {
+        lastRole = entry.role;
+        let pre = entry.role === "user" ? "Student: " : "Laura: ";
+        const messagePrefix = pre + entry.message;
+        const lines = doc.splitTextToSize(messagePrefix, maxTextWidth); //space out text
+  
+        //add a new page if at text limit
+        if (y + 10 * lines.length >= doc.internal.pageSize.getHeight() - margin) {
+          doc.addPage();
+          y = 20;
+        }
+        doc.text(margin, y, lines); 
+        y += 10 * lines.length + 2;
+      }
+    });
+  
+    doc.save('chatlog.pdf'); 
+  }
   
   const handlePatientSubmit = (serializedData) => {
     setFormData({ ...formData, patientDetails: serializedData }); 
@@ -238,6 +269,8 @@ export default function Chatbox() {
       <div className="flex-1 bg-white h-2/3 overflow-y-auto" style={{ maxWidth: '33%' }}> 
         <LauraDetails onPatientSubmit={handlePatientSubmit} />
       </div>
+      <button className='text-black-600 flex items-center w-max py-2 px-6 border border-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full font-medium text-2xl'
+onClick={() => exportChatLog(chatLog)}>Export Chat as PDF</button>
     </div>
   );
 }
