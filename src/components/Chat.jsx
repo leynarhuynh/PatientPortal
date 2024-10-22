@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import { FaFileDownload } from "react-icons/fa";
+import { FaMicrophone, FaArrowUp, FaFileDownload } from "react-icons/fa";
 import { jsPDF } from 'jspdf';
 import Logo from '../images/lauraPatient.png';
 import axios from 'axios';
@@ -17,8 +17,14 @@ function adjustMessagePatientDetails(patientDetails) {
   }
   return systemMessageContent;
 }
+
+// define speech recognition
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+
 //chatbox layout
 const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue, isLoading }) => {
+  const [isListening, setIsListening] = useState(false);
   const endOfMessages = useRef(null);
   const scrollToBottom = () => {
     endOfMessages.current?.scrollIntoView({ behavior: 'smooth' });
@@ -26,6 +32,40 @@ const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue, is
   useEffect(() => {
     scrollToBottom();
   }, [chatLog]);
+
+  useEffect(() => {
+    if (inputValue && isListening) {
+      stopSpeech();
+    }
+  }, [inputValue]);
+
+  // Start speech recognition
+  const startSpeechRecognition = () => {
+    if (!isListening) {
+      setIsListening(true);
+      recognition.start();
+      recognition.onresult = (event) => {
+        const speechToText = event.results[0][0].transcript;
+        setInputValue(speechToText); 
+        setIsListening(false);
+      };
+    }
+  };
+
+  const stopSpeech = () => {
+    recognition.stop();
+    setIsListening(false);
+  };
+
+  // FIX? to add more speech throughout -- similar to imessage
+  const toggleSpeechRecognition = () => {
+    if (isListening) {
+      stopSpeech();
+    } else {
+      startSpeechRecognition();
+    }
+  };
+
 
   return (
     <div className="flex flex-col justify-between h-full">
@@ -45,12 +85,22 @@ const ChatInterface = ({ chatLog, onMessageSubmit, inputValue, setInputValue, is
             className="flex-grow p-2 mr-4 rounded border"
             placeholder="Hi, Laura! How are you today?"
           />
-          <button type="submit" className="bg-[#353D53] text-white rounded px-4 py-2">Send</button>
+          {inputValue.trim() ? (
+            <button type="submit" className="bg-[#353D53] text-white rounded px-4 py-2">
+              <FaArrowUp />
+            </button>
+          ) : (
+            <button type="button" onClick={startSpeechRecognition} className="bg-[#353D53] text-white rounded px-4 py-2">
+              <FaMicrophone />
+            </button>
+          )}
         </form>
       </div>
     </div>
   );
 };
+
+
 // chat messages ui
 const ChatMessage = ({ message, type }) => {
   return (
@@ -188,7 +238,7 @@ export default function Chatbox() {
 
   const ChatGPTResponse = (messages) => {
     // const url = 'http://127.0.0.1:4000/completion'
-    const url = 'http://44.209.126.3/patient-response';
+    const url = 'http://98.84.121.124/patient-response';
     const headers = {
       'accept': 'application/json',
       'Content-Type': 'application/json'
