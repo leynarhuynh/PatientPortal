@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.4f08f5cd.css",
+    "main.js": "/static/js/main.902567a3.js",
+    "static/js/498.8109299e.chunk.js": "/static/js/498.8109299e.chunk.js",
+    "static/js/703.d3b49ba8.chunk.js": "/static/js/703.d3b49ba8.chunk.js",
+    "static/js/379.3800a59f.chunk.js": "/static/js/379.3800a59f.chunk.js",
+    "static/media/laurademo.gif": "/static/media/laurademo.af4ecc2e35c6a95ec8b8.gif",
+    "static/media/lauraPatient.png": "/static/media/lauraPatient.7f1f6f011122e8299e3e.png",
+    "static/media/laura.png": "/static/media/laura.cbf9f4c58eb90582c7e1.png",
+    "static/media/john.png": "/static/media/john.0f49b63e0a92df61a18e.png",
+    "static/media/ufhealth.PNG": "/static/media/ufhealth.9b82b8196c44129cc769.PNG",
+    "static/media/doctor.png": "/static/media/doctor.c04de4d1a85b3258d22e.png",
+    "static/media/johnsmith.png": "/static/media/johnsmith.9b8de4fbead607f0ad45.png",
+    "index.html": "/index.html",
+    "main.4f08f5cd.css.map": "/static/css/main.4f08f5cd.css.map",
+    "main.902567a3.js.map": "/static/js/main.902567a3.js.map",
+    "498.8109299e.chunk.js.map": "/static/js/498.8109299e.chunk.js.map",
+    "703.d3b49ba8.chunk.js.map": "/static/js/703.d3b49ba8.chunk.js.map",
+    "379.3800a59f.chunk.js.map": "/static/js/379.3800a59f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4f08f5cd.css",
+    "static/js/main.902567a3.js"
+  ]
+}
